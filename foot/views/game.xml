@@ -1,0 +1,75 @@
+<odoo>
+
+<record model="ir.ui.view" id="game_form_view">
+            <field name="name">game_form</field>
+            <field name="model">game</field>
+            <field name="arch" type="xml">
+                <form string="Game Form">
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="home_team_id"/>
+                                <field name="away_team_id"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="result"/>
+                            </group>
+                        </group>
+                        <notebook>
+                                <page string="Players">
+                                    <group>
+                                        <field name="player_ids" domain="[('player', '=', True)]"/>
+                                    </group>
+                                </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+</record>
+
+<record model="ir.ui.view" id="game_tree_view">
+            <field name="name">game_tree</field>
+            <field name="model">game</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="home_team_id"/>
+                    <field name="away_team_id"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+</record>
+
+<record model="ir.ui.view" id="players_wizard_form_view">
+            <field name="name">players_wizard_form</field>
+            <field name="model">playerswizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Players">
+                    <sheet>
+                        <field name="game_ids"/>
+                        <field name="player_ids"/>
+                    </sheet>
+                    <footer>
+                        <button name="subscribe" type="object"
+                                string="Add" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="launch_game_wizard"
+                    name="Add Players"
+                    binding_model="game"
+                    res_model="playerswizard"
+                    view_mode="form"
+                    target="new"/>
+
+</odoo>

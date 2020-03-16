@@ -1,0 +1,31 @@
+<odoo>
+
+<record model="ir.actions.act_window" id="action_team">
+    <field name="name">Teams</field>
+    <field name="res_model">team</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<record model="ir.actions.act_window" id="action_game">
+    <field name="name">Games</field>
+    <field name="res_model">game</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<record model="ir.actions.act_window" id="action_players">
+    <field name="name">Players</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('player', '=', True)]</field>
+</record>
+
+
+<menuitem id="main_menu_team" name="Teams Management" sequence="10" action="action_team"/>
+
+<menuitem id="menu_team" name="Teams" sequence="10" parent="main_menu_team" action="action_team"/>
+
+<menuitem id="menu_game" name="Games" sequence="20" parent="main_menu_team" action="action_game"/>
+
+<menuitem id="menu_players" name="Players" sequence="30" parent="main_menu_team" action="action_players"/>
+
+</odoo>

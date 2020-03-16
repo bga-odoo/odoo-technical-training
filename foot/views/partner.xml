@@ -1,0 +1,20 @@
+<odoo>
+
+
+<record model="ir.ui.view" id="academy_res_partner_form">
+    <field name="name">Partner foot extended form view"</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="player"/>
+                <field name="foot_team_id" attrs="{'invisible':[('player', '=', False)]}"/>
+                <field name="coach"/>
+            </xpath>
+        </data>
+    </field>
+</record>
+
+
+</odoo>

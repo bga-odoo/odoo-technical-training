@@ -1,0 +1,45 @@
+<odoo>
+
+<record model="ir.ui.view" id="team_form_view">
+            <field name="name">team_form</field>
+            <field name="model">team</field>
+            <field name="arch" type="xml">
+                <form string="Team Form">
+                    <sheet>
+                        <group>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="coach_id" domain="[('coach', '=', True)]" context="{'default_coach': True}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Players">
+                                <group>
+                                    <field name="player_ids" domain="[('player', '=', True)]" context="{'default_player': True}" widget="many2many"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+</record>
+
+<record model="ir.ui.view" id="team_tree_view">
+            <field name="name">team_tree</field>
+            <field name="model">team</field>
+            <field name="arch" type="xml">
+                <tree string="Team Tree">
+                    <field name="name"/>
+                    <field name="matricule"/>
+                    <field name="coach_id"/>
+                </tree>
+            </field>
+</record>
+
+
+</odoo>
+
