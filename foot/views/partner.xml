@@ -12,6 +12,20 @@
                 <field name="foot_team_id" attrs="{'invisible':[('player', '=', False)]}"/>
                 <field name="coach"/>
             </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Foot Managament">
+                    <group>
+                        <field name="game_ids" widget="many2many"/>
+                    </group>
+                    <group string="Bonus">
+                        <group>
+                            <field name="win_bonus"/>
+                            <field name="draw_bonus"/>
+                            <field name="lost_bonus"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
         </data>
     </field>
 </record>

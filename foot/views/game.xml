@@ -5,12 +5,30 @@
             <field name="model">game</field>
             <field name="arch" type="xml">
                 <form string="Game Form">
+                    <header>
+                        <button name="action_confirm" id="action_confirm"
+                        string="Confirm game" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|',('state', 'not in', ['draft']),('result', '=', False)]}"/>
+                        <button name="create_invoice_game" id="create_invoice_game"
+                        string="Create Invoices" class="btn-primary" type="object"
+                        attrs="{'invisible': ['|',('state', 'not in', ['confirmed']),('result', '=', False)]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                    </header>
                     <sheet>
-                        <group>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_game_invoice"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                                <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
                             <h1>
-                                <field name="name"/>
+                                <field name="name" readonly="1"/>
                             </h1>
-                        </group>
+                        </div>
                         <group>
                             <group>
                                 <field name="home_team_id"/>
@@ -19,12 +37,21 @@
                             <group>
                                 <field name="date"/>
                                 <field name="result"/>
+                                <field name="game_cost"/>
                             </group>
                         </group>
                         <notebook>
                                 <page string="Players">
                                     <group>
-                                        <field name="player_ids" domain="[('player', '=', True)]"/>
+                                        <field name="player_ids" domain="[('player', '=', True)]">
+                                            <tree>
+                                                <field name="name"/>
+                                                <field name="email"/>
+                                                <field name="win_bonus"/>
+                                                <field name="draw_bonus"/>
+                                                <field name="lost_bonus"/>
+                                            </tree>
+                                        </field>
                                     </group>
                                 </page>
                         </notebook>

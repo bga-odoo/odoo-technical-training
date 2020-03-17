@@ -13,8 +13,7 @@
     'depends' : [
         
         'base',
-        #'account',
-        #'sale',
+        'sale',
     ],
 
     'data' : [
@@ -24,6 +23,7 @@
         'views/game.xml',
         'views/partner.xml',
         'data/menus.xml',
+        'data/product.xml',
     ],
 
     'demo' : [

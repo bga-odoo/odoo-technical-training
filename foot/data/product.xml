@@ -1,0 +1,9 @@
+<odoo>
+
+<record model="product.product" id="product_product_prime">
+    <field name="name">Games bonus</field>
+    <field name="type">consu</field>
+    <field name="categ_id">1</field>
+</record>
+
+</odoo>
