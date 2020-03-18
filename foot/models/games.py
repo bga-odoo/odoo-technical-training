@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from odoo.exceptions import ValidationError
 
 class Game(models.Model):
     _name ='game'
@@ -17,6 +18,7 @@ class Game(models.Model):
     game_cost = fields.Float(string="Game cost", readonly="1", compute="_get_game_cost")
     invoice_ids = fields.One2many('account.move', 'game_id', string = "Invoices")
     invoice_count = fields.Integer(string="Number of invoices", compute="_get_invoice_count")
+    appearance_ids = fields.One2many('appearance', 'game_id', string="Appearances")
 
     def action_confirm(self):
         self.write({
@@ -36,19 +38,19 @@ class Game(models.Model):
                 name = "No team defined"
             record['name'] = name
 
-    @api.depends('result', 'player_ids')
+    @api.depends('result', 'appearance_ids')
     def _get_game_cost(self):
         for record in self:
             game_cost = 0
             if record.result == 'won':
-                for player in record.player_ids:
-                    game_cost += player.win_bonus
+                for player in record.appearance_ids:
+                    game_cost += player.player_id.win_bonus
             elif record.result == 'draw':
-                for player in record.player_ids:
-                    game_cost += player.draw_bonus
+                for player in record.appearance_ids:
+                    game_cost += player.player_id.draw_bonus
             elif record.result == 'lost':
-                for player in record.player_ids:
-                    game_cost += player.lost_bonus       
+                for player in record.appearance_ids:
+                    game_cost += player.player_id.lost_bonus       
             record['game_cost'] = game_cost
 
     @api.depends('invoice_ids')
@@ -90,11 +92,19 @@ class Game(models.Model):
                         'product_id':self.env.ref('foot.product_product_prime').id,
                         'price_unit':bonus,
                         'quantity': 1,
+                        'name':record.name,
                     })],
                 })
-                #for invoice_line in invoice.line_ids:
-                 #   if invoice_line.price_subtotal == 0.0:
-                  #      invoice_line.unlink()
+
+            # change the game status
+
+            record.write({
+                'state': 'done',
+            })
+
+                # for invoice_line in invoice.line_ids:
+                #     if invoice_line.price_subtotal == 0.0:
+                #         invoice_line.unlink()
 
     def action_view_game_invoice(self):
         invoices = self.mapped('invoice_ids')
@@ -121,4 +131,29 @@ class Game(models.Model):
         #     })
         # action['context'] = context
         return action
+
+        #Set game to draft
+    def set_game_draft(self):
+        for record in self:
+            if len(record.invoice_ids) > 0:
+                invoice_confirmed = 0
+                for invoice in record.invoice_ids:
+                    if invoice.state == 'posted' or invoice.state == 'cancel':
+                        invoice_confirmed = 1
+                        continue
+                if invoice_confirmed == 0:
+                    for invoices in record.invoice_ids:
+                        invoices.unlink()
+                    record.write({
+                        'state': 'draft',
+                    })
+                else:
+                    raise ValidationError("At least one invoice linked to this game has been posted")
+            else:
+                record.write({
+                    'state': 'draft',
+                })
+                        
+
+
 

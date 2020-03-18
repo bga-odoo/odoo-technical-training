@@ -19,6 +19,12 @@
     <field name="domain">[('player', '=', True)]</field>
 </record>
 
+<record model="ir.actions.act_window" id="action_appearance">
+    <field name="name">Appearances</field>
+    <field name="res_model">appearance</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
 
 <menuitem id="main_menu_team" name="Teams Management" sequence="10" action="action_team"/>
 

@@ -1,0 +1,41 @@
+<odoo>
+
+<record model="ir.ui.view" id="appearance_form_view">
+            <field name="name">appearance_form</field>
+            <field name="model">appearance</field>
+            <field name="arch" type="xml">
+                <form string="Appearance Form">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="player_id"/>
+                                <field name="player_win_bonus"/>
+                                <field name="player_draw_bonus"/>
+                                <field name="player_lost_bonus"/>
+                            </group>
+                            <group>
+                                <field name="game_id"/>
+                                <field name="is_paid"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+</record>
+
+
+<record model="ir.ui.view" id="appearance_tree_view">
+            <field name="name">appearance_tree</field>
+            <field name="model">appearance</field>
+            <field name="arch" type="xml">
+                <tree string="Appearance Tree" editable="top">
+                    <field name="player_id"/>
+                    <field name="game_id"/>
+                    <field name="game_date"/>
+                    <field name="is_paid"/>
+                </tree>
+            </field>
+</record>
+
+
+</odoo>

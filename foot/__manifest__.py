@@ -22,6 +22,7 @@
         'views/team.xml',
         'views/game.xml',
         'views/partner.xml',
+        'views/appearance.xml',
         'data/menus.xml',
         'data/product.xml',
     ],

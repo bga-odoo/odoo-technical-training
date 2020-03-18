@@ -9,6 +9,9 @@
                         <button name="action_confirm" id="action_confirm"
                         string="Confirm game" class="btn-primary" type="object"
                         attrs="{'invisible': ['|',('state', 'not in', ['draft']),('result', '=', False)]}"/>
+                        <button name="set_game_draft" id="set_game_draft"
+                        string="Set game to draft" class="btn-primary" type="object"
+                        attrs="{'invisible': [('state', 'not in', ['done', 'confirmed'])]}"/>
                         <button name="create_invoice_game" id="create_invoice_game"
                         string="Create Invoices" class="btn-primary" type="object"
                         attrs="{'invisible': ['|',('state', 'not in', ['confirmed']),('result', '=', False)]}"/>
@@ -31,16 +34,29 @@
                         </div>
                         <group>
                             <group>
-                                <field name="home_team_id"/>
-                                <field name="away_team_id"/>
+                                <field name="home_team_id" attrs="{'readonly': [('state', 'in', ['done', 'confirmed'])]}"/>
+                                <field name="away_team_id" attrs="{'readonly': [('state', 'in', ['done', 'confirmed'])]}"/>
                             </group>
                             <group>
-                                <field name="date"/>
-                                <field name="result"/>
-                                <field name="game_cost"/>
+                                <field name="date" attrs="{'readonly': [('state', 'in', ['done', 'confirmed'])]}"/>
+                                <field name="result" attrs="{'readonly': [('state', 'in', ['done', 'confirmed'])]}"/>
+                                <field name="game_cost" attrs="{'readonly': [('state', 'in', ['done', 'confirmed'])]}"/>
                             </group>
                         </group>
                         <notebook>
+                                <page string="Appearances">
+                                    <group>
+                                        <field name="appearance_ids">
+                                            <tree editable="top">
+                                                <field name="player_id" domain="[('player', '=', True)]"/>
+                                                <field name="player_win_bonus"/>
+                                                <field name="player_draw_bonus"/>
+                                                <field name="player_lost_bonus"/>
+                                                <field name="is_paid"/>
+                                            </tree>
+                                        </field>
+                                    </group>
+                                </page>
                                 <page string="Players">
                                     <group>
                                         <field name="player_ids" domain="[('player', '=', True)]">
