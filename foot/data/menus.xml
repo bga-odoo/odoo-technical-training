@@ -34,4 +34,6 @@
 
 <menuitem id="menu_players" name="Players" sequence="30" parent="main_menu_team" action="action_players"/>
 
+<menuitem id="menu_appearance" name="Appearances" sequence="40" parent="main_menu_team" action="action_appearance"/>
+
 </odoo>

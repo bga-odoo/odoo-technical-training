@@ -1,0 +1,13 @@
+<odoo>
+
+<record id="create_appearance_invoice_from_list" model="ir.actions.server">
+            <field name="name">Create invoices</field>
+            <field name="model_id" ref="foot.model_appearance"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                action = model.action_create_appearance_invoice()
+            </field>
+        </record>
+
+</odoo>

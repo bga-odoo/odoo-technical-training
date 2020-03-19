@@ -61,46 +61,72 @@ class Game(models.Model):
     def create_invoice_game(self):
         for record in self:
             sequence_code = 'account.payment.supplier.invoice'
-            for player in record.player_ids:
-                bonus = {
-                    'won': player.win_bonus,
-                    'draw': player.draw_bonus,
-                    'lost': player.lost_bonus,
-                    }.get(record.result, 0)
-            # if record.result == 'won':
-            #     game_status = 1
-            # elif record.result == "draw":
-            #     game_status = 2
-            # elif record.result == "lost":
-            #     game_status = 3
-            
-            #     if game_status == 1:
-            #         bonus = player.win_bonus
-            #     elif game_status == 2:
-            #         bonus = player.draw_bonus
-            #     elif game_status == 3:
-            #         bonus = player.lost_bonus
-                invoice = self.env['account.move'].create({
-                    'partner_id':player.id,
-                    'date':datetime.now(),
-                    'journal_id':2,
-                    'game_id':record.id,
-                    #'name': self.env['ir.sequence'].next_by_code(sequence_code),
-                    'state':'draft',
-                    'type':'in_invoice',
-                    'invoice_line_ids': [(0, 0, {
-                        'product_id':self.env.ref('foot.product_product_prime').id,
-                        'price_unit':bonus,
-                        'quantity': 1,
-                        'name':record.name,
-                    })],
-                })
+            for appearance in record.appearance_ids:
+                if appearance.is_paid == False:
+                    bonus = {
+                        'won': appearance.player_id.win_bonus,
+                        'draw': appearance.player_id.draw_bonus,
+                        'lost': appearance.player_id.lost_bonus,
+                        }.get(record.result, 0)
+
+                    invoice = self.env['account.move'].create({
+                        'partner_id': appearance.player_id.id,
+                        'date': datetime.now(),
+                        'journal_id': 2,
+                        'game_id': record.id,
+                        #'name': self.env['ir.sequence'].next_by_code(sequence_code),
+                        'state': 'draft',
+                        'type': 'in_invoice',
+                        'invoice_line_ids': [(0, 0, {
+                            'product_id': self.env.ref('foot.product_product_prime').id,
+                            'price_unit': bonus,
+                            'quantity': 1,
+                            'name': record.name,
+                            'game_id': record.id
+                        })],
+                    })
+
+                    appearance.write({
+                        'is_paid': True,
+                    })
 
             # change the game status
 
             record.write({
                 'state': 'done',
             })
+    
+    # def create_invoice_game(self):
+    #     for record in self:
+    #         sequence_code = 'account.payment.supplier.invoice'
+    #         for player in record.player_ids:
+    #             bonus = {
+    #                 'won': player.win_bonus,
+    #                 'draw': player.draw_bonus,
+    #                 'lost': player.lost_bonus,
+    #                 }.get(record.result, 0)
+
+    #             invoice = self.env['account.move'].create({
+    #                 'partner_id':player.id,
+    #                 'date':datetime.now(),
+    #                 'journal_id':2,
+    #                 'game_id':record.id,
+    #                 #'name': self.env['ir.sequence'].next_by_code(sequence_code),
+    #                 'state':'draft',
+    #                 'type':'in_invoice',
+    #                 'invoice_line_ids': [(0, 0, {
+    #                     'product_id':self.env.ref('foot.product_product_prime').id,
+    #                     'price_unit':bonus,
+    #                     'quantity': 1,
+    #                     'name':record.name,
+    #                 })],
+    #             })
+
+    #         # change the game status
+
+    #         record.write({
+    #             'state': 'done',
+    #         })
 
                 # for invoice_line in invoice.line_ids:
                 #     if invoice_line.price_subtotal == 0.0:

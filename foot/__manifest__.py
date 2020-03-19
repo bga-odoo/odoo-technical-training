@@ -25,6 +25,7 @@
         'views/appearance.xml',
         'data/menus.xml',
         'data/product.xml',
+        'data/server_action.xml',
     ],
 
     'demo' : [
