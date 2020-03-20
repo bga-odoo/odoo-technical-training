@@ -32,6 +32,7 @@
                     <field name="player_id"/>
                     <field name="game_id"/>
                     <field name="game_date"/>
+                    <field name="game_state"/>
                     <field name="is_paid"/>
                 </tree>
             </field>

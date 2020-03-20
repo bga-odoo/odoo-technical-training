@@ -51,7 +51,7 @@ class Appearance(models.Model):
                         'partner_id': record.player_id.id,
                         'date': datetime.now(),
                         'journal_id': 2,
-                        'game_id': record.id,
+                        'game_id': record.game_id.id,
                         #'name': self.env['ir.sequence'].next_by_code(sequence_code),
                         'state': 'draft',
                         'type': 'in_invoice',
@@ -59,8 +59,8 @@ class Appearance(models.Model):
                             'product_id': self.env.ref('foot.product_product_prime').id,
                             'price_unit': bonus,
                             'quantity': 1,
-                            'name': record.name,
-                            'game_id': record.id
+                            'name': record.game_id.name,
+                            'game_id': record.game_id.id
                         })],
                     })
 
@@ -69,12 +69,12 @@ class Appearance(models.Model):
                     })
                 else:
                     raise ValidationError("At least an appearance is paid or a game is not confirmed")
-                all_paid = True
+                all_paid = 1
                 for appearance in record.game_id.appearance_ids:
-                    if appearance.is_paid == False:
-                        all_good = False
+                    if appearance.is_paid is False:
+                        all_paid = 0
                         break
-                if all_paid == True:
+                if all_paid == 1:
                     record.game_id.write({
                         'state': 'done',
                     })

@@ -85,6 +85,7 @@
                     <field name="home_team_id"/>
                     <field name="away_team_id"/>
                     <field name="date"/>
+                    <field name="state"/>
                 </tree>
             </field>
 </record>
